@@ -159,6 +159,10 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
             UIApplication * app = [UIApplicationClass performSelector:@selector(sharedApplication)];
             self.backgroundTaskId = [app beginBackgroundTaskWithExpirationHandler:^{
                 [wself cancel];
+                
+                // fix for MW v6.42.0: page freezed when load web image priority is low
+                [app endBackgroundTask:wself.backgroundTaskId];
+                wself.backgroundTaskId = UIBackgroundTaskInvalid;
             }];
         }
 #endif
